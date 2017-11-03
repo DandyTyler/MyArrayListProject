@@ -1,8 +1,10 @@
 package com.akos;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class MyArrayList <E> {
+public class MyArrayList <E extends Comparable> implements MyList<E> {
     private final int ARRAY_START_SIZE= 5;
     private Object[] array ;
     private int size =0;
@@ -43,7 +45,7 @@ public class MyArrayList <E> {
 
     /**
      * Добавляет элемент по индексу, сдвигая старые элементы вправо
-     * Private, т.к. спользуется только для вставки нового элемента в порядке сортировки
+     * Private, т.к. используется только для вставки нового элемента в порядке сортировки
      * @param index позиция по которой вставляется элемент
      * @param element  Элемент добавляемый в массив
      */
@@ -101,15 +103,40 @@ public class MyArrayList <E> {
         return oldValue;
     }
 
-    public int size(){
-        return size;
-    }
-
     /**
      * Увеличивает размер массива
      */
     private void resize(){
         array = Arrays.copyOf(array, array.length*2);
+    }
+
+    public int size(){
+        return size;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new MyListIterator();
+    }
+
+    private class MyListIterator implements Iterator<E>{
+        private int curr = 0;
+
+        @Override
+        public boolean hasNext() {
+            return this.curr<size;
+        }
+
+        @Override
+        public E next() {
+            int nextIndex;
+            if (!this.hasNext()){
+                throw new NoSuchElementException();
+            }
+            E value = get(curr);
+            curr++;
+            return value;
+        }
     }
 
     @Override
