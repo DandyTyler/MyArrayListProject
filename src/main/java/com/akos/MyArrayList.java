@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-// TODO: 06.11.2017 Add checkIndex method
 public class MyArrayList<E extends Comparable> implements MyList<E> {
     private final int ARRAY_START_SIZE = 5;
     private Object[] array;
@@ -60,32 +59,60 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
     }
 
     private E minOf(E value1, E value2) {
-        Comparable buff = value1;
-        if (buff.compareTo(value2) < 0) {
+        if (value1.compareTo(value2) < 0) {
             return value1;
         } else
             return value2;
     }
 
-    private E maxOf(E value1, E value2) {
-        Comparable buff = value1;
-        if (buff.compareTo(value2) >= 0) {
-            return value1;
-        } else
-            return value2;
+    private void checkIndex(int index) {
+        if (index >= size())
+            throw new IndexOutOfBoundsException("index = " + index + ", size = " + size);
     }
 
-    public E get() {
-        return (E) array[size - 1];
-    }            //Без аргументов, наверное не нужен
+    private void checkHasElements() {
+        if (size == 0) throw new NoSuchElementException("size = " + size);
+    }
 
     public E get(int index) {
+        checkIndex(index);
         return (E) array[index];
     }
 
-    public E remove() {                                  //Без аргументов, наверное не нужен
-        E oldValue = (E) array[--size];
-        return oldValue;
+    /**
+     * Возвращает максимальный элемент
+     */
+    public E getMax() {
+        checkHasElements();
+        return (E) array[size - 1];
+    }
+
+    /**
+     * Удаляет максмальный элемент
+     *
+     * @return Возврвщает удаленный элемент
+     */
+    public E removeMax() {
+        checkHasElements();
+        return (E) array[--size];
+    }
+
+    /**
+     * Возвращает минимальный элемент
+     */
+    public E getMin() {
+        checkHasElements();
+        return (E) array[0];
+    }
+
+    /**
+     * Удаляет минимальный элемент
+     *
+     * @return Возврвщает удаленный элемент
+     */
+    public E removeMin() {
+        checkHasElements();
+        return (E) remove(0);
     }
 
     /**
@@ -93,9 +120,9 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
      *
      * @param index индекс удаляемого элемента
      * @return Возврвщает удаленный элемент
-     * @
      */
     public E remove(int index) {
+        checkIndex(index);
         E oldValue = (E) array[index];
         System.arraycopy(array, index + 1, array, index, size - (index + 1));
         array[size] = null;
@@ -137,13 +164,24 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
             curr++;
             return value;
         }
+
+        @Override
+        public void remove() {
+            if (size > 0) {
+                MyArrayList.this.remove(curr - 1);
+                curr--;
+            }
+        }
     }
 
     @Override
     public String toString() {
-        String str = "";
-        for (int i = 0; i < this.size; i++)
-            str = str + array[i] + " ";
-        return str;
+        String str = "[";
+        for (int i = 0; i < this.size; i++) {
+            if (i == size - 1)
+                return str + array[i] + "]";
+            str += array[i] + ", ";
+        }
+        return str + "]";
     }
 }
