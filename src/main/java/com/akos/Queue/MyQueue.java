@@ -1,4 +1,4 @@
-package com.akos.Queue;
+package com.akos.queue;
 
 class MyQueue<K, V> implements Queue<K, V> {
     private QueueEntry head = null;
@@ -14,6 +14,34 @@ class MyQueue<K, V> implements Queue<K, V> {
         }
         tail = currEntry;
         size++;
+    }
+
+    @Override
+    public Pair getPair(int index) {
+        if (size == 0 || index >= size || index < 0) {
+            return null;
+        }
+        QueueEntry current = head;
+        int position = 0;
+        while (position < index) {
+            current = current.getNext();
+            position++;
+        }
+        return new Pair(current.getKey(), current.getValue());
+    }
+
+    @Override
+    public V get(K key) {
+        int position = 0;
+        QueueEntry current = head;
+        while (position < size) {
+            if (key.equals(current.getKey())) {
+                return current.getValue();
+            }
+            current = current.getNext();
+            position++;
+        }
+        return null;
     }
 
     public Pair pull() {
@@ -34,7 +62,6 @@ class MyQueue<K, V> implements Queue<K, V> {
     }
 
     private class QueueEntry {
-        // Поле для хранения объектов
         private K key;
         private V value;
         private QueueEntry next;
@@ -52,7 +79,7 @@ class MyQueue<K, V> implements Queue<K, V> {
             return value;
         }
 
-        public void setValue(V value) {
+        void setValue(V value) {
             this.value = value;
         }
 

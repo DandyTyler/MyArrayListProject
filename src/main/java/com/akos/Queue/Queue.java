@@ -1,7 +1,13 @@
-package com.akos.Queue;
+package com.akos.queue;
 
-public interface Queue<K,V> {
+public interface Queue<K, V> {
     int size();
+
     void push(K key, V value);
-    Object pull();
+
+    Pair getPair(int index);
+
+    V get(K key);
+
+    Pair pull();
 }

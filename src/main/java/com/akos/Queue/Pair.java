@@ -1,4 +1,4 @@
-package com.akos.Queue;
+package com.akos.queue;
 
 public class Pair<K, V> {
     private K key;

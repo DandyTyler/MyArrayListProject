@@ -1,4 +1,4 @@
-package com.akos;
+package com.akos.list;
 
 public interface MyList<E> extends Iterable<E> {
 
