@@ -1,5 +1,11 @@
 package com.akos.queue;
 
+/**
+ * Класс для хранения двух элементов
+ *
+ * @param <K> тип элемента "Ключ"
+ * @param <V> тип элемента "Значение"
+ */
 public class Pair<K, V> {
     private K key;
     private V value;

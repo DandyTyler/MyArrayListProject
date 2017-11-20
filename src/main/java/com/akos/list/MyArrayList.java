@@ -4,6 +4,18 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * Класс является реализацией автоматически расширяемого массива, реализует интерфейс <tt>MyList</tt>.
+ * При создании экземпляр класса имеет вместимость элементов равную <tt>ARRAY_START_SIZE</tt>.
+ * По мере добавления элементов вместимость увеличивается с помощью метода <tt>resize</tt>
+ * Также класс реализует возможность автоматического упорядочивания элементов по мере добавления а также доступ
+ * к минимальному и максимальному элементу. Поэтому в массив можно добавлять только элементы,
+ * реализующие интерфейс <tt>Comparable</tt>.
+ *
+ * @see com.akos.list.MyList
+ * @see Comparable
+ */
+
 public class MyArrayList<E extends Comparable> implements MyList<E> {
     private final int ARRAY_START_SIZE = 5;
     private Object[] array;
@@ -17,7 +29,7 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
     /**
      * Добавляет элемент в массив. Если в массиве недостаточно места для вставки нового элемента, создается массив
      * большего размера при помощи метода resize(). При добавлении элемент ставится на позицию, необходимую для
-     * поддержания отсортированности. Если в массиве еще нет элементов, добавляется по индексу 0;
+     * поддержания отсортированности. Если в массиве еще нет элементов, добавляется по индексу 0.
      *
      * @param element Элемент добавляемый в массив.
      */
@@ -81,6 +93,8 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
 
     /**
      * Возвращает максимальный элемент
+     *
+     * @return максимальный элемент
      */
     public E getMax() {
         checkHasElements();
@@ -90,7 +104,7 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
     /**
      * Удаляет максмальный элемент
      *
-     * @return Возврвщает удаленный элемент
+     * @return удаленный элемент
      */
     public E removeMax() {
         checkHasElements();
@@ -99,6 +113,8 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
 
     /**
      * Возвращает минимальный элемент
+     *
+     * @return минимальный элемент
      */
     public E getMin() {
         checkHasElements();
@@ -108,7 +124,7 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
     /**
      * Удаляет минимальный элемент
      *
-     * @return Возврвщает удаленный элемент
+     * @return удаленный элемент
      */
     public E removeMin() {
         checkHasElements();
@@ -119,7 +135,7 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
      * Удаляет элемент по индексу
      *
      * @param index индекс удаляемого элемента
-     * @return Возврвщает удаленный элемент
+     * @return удаленный элемент
      */
     public E remove(int index) {
         checkIndex(index);
@@ -156,7 +172,6 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
 
         @Override
         public E next() {
-            int nextIndex;
             if (!this.hasNext()) {
                 throw new NoSuchElementException();
             }
@@ -172,6 +187,31 @@ public class MyArrayList<E extends Comparable> implements MyList<E> {
                 curr--;
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof MyList))
+            return false;
+        Iterator<E> e1 = iterator();
+        Iterator<?> e2 = ((MyList<?>) o).iterator();
+        while (e1.hasNext() && e2.hasNext()) {
+            E o1 = e1.next();
+            Object o2 = e2.next();
+            if (!(o1 == null ? o2 == null : o1.equals(o2)))
+                return false;
+        }
+        return !(e1.hasNext() || e2.hasNext());
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+        for (E e : this)
+            hashCode = 31 * hashCode + (e == null ? 0 : e.hashCode());
+        return hashCode;
     }
 
     @Override

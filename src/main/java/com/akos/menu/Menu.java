@@ -6,11 +6,20 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Реализация изменяемого консольного меню. Хранит в себе элементы меню и выводит их.
+ *
+ * @see MenuEntry
+ */
+
 public class Menu {
     private static final String MENU_PATTERN = "%s - %s\n";
     private List<MenuEntry> entries = new ArrayList<>();
     private boolean isExit = false;
 
+    /**
+     * При создании экземпляра класса создается элемент для выхода из меню
+     */
     public Menu() {
         entries.add(new MenuEntry("Выход") {
             @Override
@@ -20,6 +29,10 @@ public class Menu {
         });
     }
 
+    /**
+     * Выводит все элементы меню до тех пор, пока пользователем не будет выбран пункт "Выход" а также проверяет
+     * корректность введенных пользователем значений.
+     */
     public void run() {
         while (!isExit) {
             printMenu();
@@ -39,12 +52,21 @@ public class Menu {
         }
     }
 
+    /**
+     * Позволяет добавить новый элемент
+     *
+     * @param entry добавляемый элемент меню
+     * @return ссылка на данный обьект
+     */
     public Menu addEntry(MenuEntry entry) {
         int index = entries.size() - 1;
         entries.add(index, entry);
         return this;
     }
 
+    /**
+     * Выводит список элементов
+     */
     private void printMenu() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("\nВыберите действие:\n");

@@ -1,6 +1,13 @@
 package com.akos.queue;
 
-class MyQueue<K, V> implements Queue<K, V> {
+/**
+ * Реализация интерфейса DoubleQueue
+ *
+ * @param <K> тип ключа
+ * @param <V> тип значения
+ * @see DoubleQueue
+ */
+public class MyDoubleQueue<K, V> implements DoubleQueue<K, V> {
     private QueueEntry head = null;
     private QueueEntry tail = null;
     private int size = 0;
@@ -16,7 +23,13 @@ class MyQueue<K, V> implements Queue<K, V> {
         size++;
     }
 
-    @Override
+    /**
+     * Возвращает обьект типа Pair, содержащий ключ и значение лежащие по данному индексу
+     * Если по такому индексу нет значений возвращает null
+     *
+     * @param index индекс элемента
+     * @return обьект класса <tt>Pair</tt> хранящий ключ и значение
+     */
     public Pair getPair(int index) {
         if (size == 0 || index >= size || index < 0) {
             return null;
@@ -30,7 +43,6 @@ class MyQueue<K, V> implements Queue<K, V> {
         return new Pair(current.getKey(), current.getValue());
     }
 
-    @Override
     public V get(K key) {
         int position = 0;
         QueueEntry current = head;
@@ -44,6 +56,9 @@ class MyQueue<K, V> implements Queue<K, V> {
         return null;
     }
 
+    /**
+     * "Достает" элемент из начала очереди. Если очередь пуста, возвращает null
+     */
     public Pair pull() {
         if (size == 0) {
             return null;
@@ -61,6 +76,9 @@ class MyQueue<K, V> implements Queue<K, V> {
         return size;
     }
 
+    /**
+     * Класс для хранения ключа, значения а также ссылки на следующий элемент в очереди
+     */
     private class QueueEntry {
         private K key;
         private V value;

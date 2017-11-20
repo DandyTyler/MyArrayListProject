@@ -1,5 +1,11 @@
 package com.akos.menu;
 
+/**
+ * Элемент меню, который имеет название и метод <tt>run()</tt>содержаший действия, выполняемые при выборе данного элемента
+ *
+ * @see Menu
+ */
+
 public abstract class MenuEntry {
     private String title;
 
